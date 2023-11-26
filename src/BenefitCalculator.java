@@ -4,7 +4,7 @@ import java.util.Collections;
 public class BenefitCalculator {
     public static void main(String[] args) {
 
-        int userInput_PayUL = 40;
+        int userInput_PayUL = 25;
 
         int[] payUL_Limits = new int[] {5, 25, 50};
         int[] payUL_LimitCosts = new int[] {0, 990, 1590};
@@ -41,7 +41,7 @@ public class BenefitCalculator {
         String inn = "1234567890";
         boolean isClientIP = inn.length() > 10;
 
-        int userInput_PayFL = 1505000;
+        int userInput_PayFL = 500000;
 
         int[] payFL_Limits = new int[] {300000, 500000, 1000000};
         int[] payFL_LimitCosts = new int[] {0, 2490, 5990};
@@ -79,7 +79,7 @@ public class BenefitCalculator {
 
         //-------------------------------------------------------------------------------------------------------------------------------
 
-        int userInput_cashToAcc = 290000;
+        int userInput_cashToAcc = 256000;
 
         int[] cashToAcc_Limits = new int[] {50000, 250000, 500000};
         int[] cashToAcc_LimitCosts = new int[] {0, 390, 790};
@@ -118,9 +118,13 @@ public class BenefitCalculator {
         int totalOverLimit = totalPrice - totalLimitsPrice;
         System.out.println("--------------------------------------------------------------------------------------");
         System.out.println("ИТОГО.");
-        System.out.println("По подписке = " + totalLimitsPrice + " рублей.");
-        System.out.println("Сверх лимита = " + totalOverLimit + " рублей.");
-        System.out.println("Общая сумма = " + totalPrice + " рублей.");
+        if (isClientIP) {
+            System.out.println("Расчёт для ИП.");
+        } else System.out.println("Расчёт для ООО.");
+        System.out.println();
+        System.out.println("По подписке = " + totalLimitsPrice + " руб.");
+        System.out.println("Сверх лимита = " + totalOverLimit + " руб.");
+        System.out.println("Общая сумма = " + totalPrice + " руб.");
     }
 
     public static int getTotalPrice(int userInput, int limit, int limitCost, int OverLimitCost) {
