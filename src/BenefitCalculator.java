@@ -4,7 +4,7 @@ import java.util.Collections;
 public class BenefitCalculator {
     public static void main(String[] args) {
 
-        int userInput_PayUL = 25;
+        int userInput_PayUL = 40;
 
         int[] payUL_Limits = new int[] {5, 25, 50};
         int[] payUL_LimitCosts = new int[] {0, 990, 1590};
@@ -78,6 +78,49 @@ public class BenefitCalculator {
         System.out.println("Стоимость платежей сверх лимита составляет: " + (payFL_MinPrice - payFL_LimitCost) + " руб.");
 
         //-------------------------------------------------------------------------------------------------------------------------------
+
+        int userInput_cashToAcc = 290000;
+
+        int[] cashToAcc_Limits = new int[] {50000, 250000, 500000};
+        int[] cashToAcc_LimitCosts = new int[] {0, 390, 790};
+        
+        double cashToAcc_OverLimitCost = 0.004;
+        int[] cashToAcc_TotalPrices = new int[] {
+                getTotalPriceIfDouble(userInput_cashToAcc, cashToAcc_Limits[0], cashToAcc_LimitCosts[0], cashToAcc_OverLimitCost),
+                getTotalPriceIfDouble(userInput_cashToAcc, cashToAcc_Limits[1], cashToAcc_LimitCosts[1], cashToAcc_OverLimitCost),
+                getTotalPriceIfDouble(userInput_cashToAcc, cashToAcc_Limits[2], cashToAcc_LimitCosts[2], cashToAcc_OverLimitCost)
+        };
+        var cashToAcc_MinPrice = Collections.min(Arrays.stream(cashToAcc_TotalPrices).boxed().toList());
+
+        int cashToAcc_Limit = -0;
+        int cashToAcc_LimitCost = -0;
+        if (cashToAcc_MinPrice == cashToAcc_TotalPrices[0]) {
+            cashToAcc_Limit = cashToAcc_Limits[0];
+            cashToAcc_LimitCost = cashToAcc_LimitCosts[0];
+        } if (cashToAcc_MinPrice == cashToAcc_TotalPrices[1]) {
+            cashToAcc_Limit = cashToAcc_Limits[1];
+            cashToAcc_LimitCost = cashToAcc_LimitCosts[1];
+        } if (cashToAcc_MinPrice == cashToAcc_TotalPrices[2]) {
+            cashToAcc_Limit = cashToAcc_Limits[2];
+            cashToAcc_LimitCost = cashToAcc_LimitCosts[2];
+        }
+        System.out.println("--------------------------------------------------------------------------------------");
+        System.out.println("Была рассчитана общая стоимость зачисления наличных на счёт в сумме: " + userInput_cashToAcc + " руб.");
+        System.out.println("Для каждого лимита, в порядке очередности, общая стоимость услуги составляет: " + Arrays.toString(cashToAcc_TotalPrices) + ".");
+        System.out.println("Наименьшей суммой в диапазоне является: " + cashToAcc_MinPrice + " руб.");
+        System.out.println("Ей соответствует лимит в " + cashToAcc_Limit + " руб. на приём наличных на счёт.");
+        System.out.println("Стоимость данной подписки составляет: " + cashToAcc_LimitCost + " руб.");
+        System.out.println("Стоимость зачислений сверх лимита составляет: " + (cashToAcc_MinPrice - cashToAcc_LimitCost) + " руб.");
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        int totalPrice = payUL_MinPrice + payFL_MinPrice + cashToAcc_MinPrice;
+        int totalLimitsPrice = payUL_LimitCost + payFL_LimitCost + cashToAcc_LimitCost;
+        int totalOverLimit = totalPrice - totalLimitsPrice;
+        System.out.println("--------------------------------------------------------------------------------------");
+        System.out.println("ИТОГО.");
+        System.out.println("По подписке = " + totalLimitsPrice + " рублей.");
+        System.out.println("Сверх лимита = " + totalOverLimit + " рублей.");
+        System.out.println("Общая сумма = " + totalPrice + " рублей.");
     }
 
     public static int getTotalPrice(int userInput, int limit, int limitCost, int OverLimitCost) {
